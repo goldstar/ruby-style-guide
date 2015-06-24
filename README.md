@@ -10,18 +10,6 @@ guide, documenting Ruby coding style and best practices. And I do believe that
 style matters. I also believe that a great hacker community, such as Ruby has,
 should be quite capable of producing this coveted document.
 
-This guide started its life as our internal company Ruby coding guidelines
-(written by yours truly). At some point I decided that the work I was doing
-might be interesting to members of the Ruby community in general and that the
-world had little need for another internal company guideline. But the world
-could certainly benefit from a community-driven and community-sanctioned set of
-practices, idioms and style prescriptions for Ruby programming.
-
-Since the inception of the guide I've received a lot of feedback from members of
-the exceptional Ruby community around the world. Thanks for all the suggestions
-and the support! Together we can make a resource beneficial to each and every
-Ruby developer out there.
-
 By the way, if you're into Rails you might want to check out the complementary
 [Ruby on Rails Style Guide][rails-style-guide].
 
@@ -64,18 +52,6 @@ You can generate a PDF or an HTML copy of this guide using
 [RuboCop][] is a code analyzer, based on this
 style guide.
 
-Translations of the guide are available in the following languages:
-
-* [Chinese Simplified](https://github.com/JuanitoFatas/ruby-style-guide/blob/master/README-zhCN.md)
-* [Chinese Traditional](https://github.com/JuanitoFatas/ruby-style-guide/blob/master/README-zhTW.md)
-* [French](https://github.com/porecreat/ruby-style-guide/blob/master/README-frFR.md)
-* [German](https://github.com/arbox/de-ruby-style-guide/blob/master/README-deDE.md)
-* [Japanese](https://github.com/fortissimo1997/ruby-style-guide/blob/japanese/README.ja.md)
-* [Korean](https://github.com/dalzony/ruby-style-guide/blob/master/README-koKR.md)
-* [Portuguese](https://github.com/rubensmabueno/ruby-style-guide/blob/master/README-PT-BR.md)
-* [Russian](https://github.com/arbox/ruby-style-guide/blob/master/README-ruRU.md)
-* [Spanish](https://github.com/alemohamad/ruby-style-guide/blob/master/README-esLA.md)
-* [Vietnamese](https://github.com/scrum2b/ruby-style-guide/blob/master/README-viVN.md)
 
 ## Table of Contents
 
@@ -347,24 +323,6 @@ Translations of the guide are available in the following languages:
            else
              calc_something_else
            end
-
-  # good (and a bit more width efficient)
-  kind =
-    case year
-    when 1850..1889 then 'Blues'
-    when 1890..1909 then 'Ragtime'
-    when 1910..1929 then 'New Orleans Jazz'
-    when 1930..1939 then 'Swing'
-    when 1940..1950 then 'Bebop'
-    else 'Jazz'
-    end
-
-  result =
-    if some_cond
-      calc_something
-    else
-      calc_something_else
-    end
   ```
 
 * <a name="empty-lines-between-methods"></a>
@@ -413,18 +371,15 @@ Translations of the guide are available in the following languages:
 
   ```Ruby
   # bad
-  def some_method(arg1=:default, arg2=nil, arg3=[])
+  def some_method(arg1 = :default, arg2 = nil, arg3 = [])
     # do something...
   end
 
   # good
-  def some_method(arg1 = :default, arg2 = nil, arg3 = [])
+  def some_method(arg1=:default, arg2=nil, arg3=[])
     # do something...
   end
   ```
-
-  While several Ruby books suggest the first style, the second is much more
-  prominent in practice (and arguably a bit more readable).
 
 * <a name="no-trailing-backslash"></a>
   Avoid line continuation `\` where not required. In practice, avoid using
@@ -449,6 +404,8 @@ Translations of the guide are available in the following languages:
     popular styles in the Ruby community, both of which are considered
     good - leading `.` (Option A) and trailing `.` (Option B).
 <sup>[[link](#consistent-multi-line-chains)]</sup>
+
+At Goldstar, we use (Option B)
 
   * **(Option A)** When continuing a chained method invocation on
     another line keep the `.` on the second line.
@@ -530,16 +487,16 @@ Translations of the guide are available in the following languages:
   menu_item = ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
 
+  # bad
+  menu_item =
+    ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
+     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
+
   # good
   menu_item = [
     'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam'
   ]
-
-  # good
-  menu_item =
-    ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
-     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
   ```
 
 * <a name="underscores-in-numerics"></a>
@@ -566,10 +523,6 @@ Translations of the guide are available in the following languages:
 * <a name="no-trailing-whitespace"></a>
   Avoid trailing whitespace.
 <sup>[[link](#no-trailing-whitespace)]</sup>
-
-* <a name="newline-eof"></a>
-  End each file with a newline.
-<sup>[[link](#newline-eof)]</sup>
 
 * <a name="no-block-comments"></a>
     Don't use block comments. They cannot be preceded by whitespace and are not
@@ -710,7 +663,7 @@ Translations of the guide are available in the following languages:
 
   ```Ruby
   # bad
-  if some_condition then
+  if some_condition then   # this is a fireable offense
     # body omitted
   end
 
@@ -763,11 +716,22 @@ Translations of the guide are available in the following languages:
   # bad
   some_condition ? (nested_condition ? nested_something : nested_something_else) : something_else
 
-  # good
+  # okay
   if some_condition
     nested_condition ? nested_something : nested_something_else
   else
     something_else
+  end
+
+  # good
+  if some_condition
+    method_wrapping_condition
+  else
+    something_else
+  end
+
+  def method_wrapping_condition
+    nested_condition ? nested_something : nested_something_else
   end
   ```
 
@@ -892,9 +856,6 @@ Translations of the guide are available in the following languages:
 
   # good
   do_something if some_condition
-
-  # another good option
-  some_condition && do_something
   ```
 
 * <a name="no-multiline-if-modifiers"></a>
@@ -929,9 +890,6 @@ Translations of the guide are available in the following languages:
 
   # good
   do_something unless some_condition
-
-  # another good option
-  some_condition || do_something
   ```
 
 * <a name="no-else-with-unless"></a>
@@ -1147,10 +1105,14 @@ condition](#safe-assignment-in-condition).
 
 * <a name="single-line-blocks"></a>
   Prefer `{...}` over `do...end` for single-line blocks.  Avoid using `{...}`
-  for multi-line blocks (multiline chaining is always ugly). Always use
-  `do...end` for "control flow" and "method definitions" (e.g. in Rakefiles and
-  certain DSLs).  Avoid `do...end` when chaining.
+  for multi-line blocks (multiline chaining is always ugly).
+  
 <sup>[[link](#single-line-blocks)]</sup>
+
+  For multiline blocks, only use `{...}` if you care about the values. Use 
+  `do...end` when you don't care about the values.
+
+<sup>[[link](#weirich-blocks)]</sup>
 
   ```Ruby
   names = %w(Bozhidar Steve Sarah)
@@ -1170,11 +1132,17 @@ condition](#safe-assignment-in-condition).
 
   # good
   names.select { |name| name.start_with?('S') }.map(&:upcase)
-  ```
 
-  Some will argue that multiline chaining would look OK with the use of {...},
-  but they should ask themselves - is this code really readable and can the
-  blocks' contents be extracted into nifty methods?
+  # good
+  names.select { |name|
+    name.start_with?('S')
+  }.map { |name| name.upcase }
+
+  # good
+  let(:thing) {
+    FactoryGirl.build(:thing)
+  }
+  ```
 
 * <a name="block-argument"></a>
   Consider using explicit block argument to avoid writing block literal that
@@ -1217,6 +1185,12 @@ condition](#safe-assignment-in-condition).
   # good
   def some_method(some_arr)
     some_arr.size
+  end
+  
+  # good
+  def some_method
+    return if some_condition?
+    value
   end
   ```
 
@@ -1268,8 +1242,8 @@ condition](#safe-assignment-in-condition).
     end
 
     # good
-    def do_something(params = {})
-      unless params[:when] == :later
+    def do_something(things = {})
+      unless things[:when] == :later
         output(options[:message])
       end
     end
@@ -1290,13 +1264,13 @@ condition](#safe-assignment-in-condition).
     ...
   end
 
-  # good (MRI would still complain, but RuboCop won't)
+  # okay (MRI would still complain, but RuboCop won't)
   if (v = array.grep(/foo/))
     do_something(v)
     ...
   end
 
-  # good
+  # better
   v = array.grep(/foo/)
   if v
     do_something(v)
@@ -1505,6 +1479,14 @@ condition](#safe-assignment-in-condition).
     tmp = a * 7
     tmp * b / 50
   end
+  
+  # stabby required if there are default arguments to the lambda
+  l = ->(a, b=2) { a + b }
+  
+  somemethod thing1: -> { puts 'thing1' }
+             thing2: -> { puts 'thing2' }
+             
+  validate presence: :name, if: -> { user.needs_name }
   ```
 
 * <a name="stabby-lambda-no-args"></a>
@@ -1606,7 +1588,7 @@ no parameters.
   '%d %d' % [20, 10]
   # => '20 10'
 
-  # good
+  # ok
   sprintf('%d %d', 20, 10)
   # => '20 10'
 
@@ -1617,7 +1599,7 @@ no parameters.
   format('%d %d', 20, 10)
   # => '20 10'
 
-  # good
+  # best
   format('%{first} %{second}', first: 20, second: 10)
   # => '20 10'
   ```
@@ -1800,10 +1782,16 @@ no parameters.
   pretty self-explanatory.
 <sup>[[link](#map-find-select-reduce-size)]</sup>
 
+If you are accumulating into a Hash or Array, `each.with_object({})` is somewhat
+easier to understand than `inject` and you don't need to remember to return
+the accumulator at the end of the of block.
+
 * <a name="count-vs-size"></a>
   Don't use `count` as a substitute for `size`. For `Enumerable` objects other
   than `Array` it will iterate the entire collection in order to determine its
   size.
+
+  Use `count` only if you intend to issue a COUNT query via `ActiveRecord::Relation`
 <sup>[[link](#count-vs-size)]</sup>
 
   ```Ruby
@@ -1897,6 +1885,10 @@ no parameters.
 * <a name="camelcase-classes"></a>
   Use `CamelCase` for classes and modules.  (Keep acronyms like HTTP, RFC, XML
   uppercase.)
+
+  If you are wanting something to autoload via the Rails autoload facility, then
+  you will have to name acronyms in CamelCase.
+  
 <sup>[[link](#camelcase-classes)]</sup>
 
   ```Ruby
@@ -2127,27 +2119,6 @@ no parameters.
   Use `FIXME` to note broken code that needs to be fixed.
 <sup>[[link](#fixme)]</sup>
 
-* <a name="optimize"></a>
-  Use `OPTIMIZE` to note slow or inefficient code that may cause performance
-  problems.
-<sup>[[link](#optimize)]</sup>
-
-* <a name="hack"></a>
-  Use `HACK` to note code smells where questionable coding practices were used
-  and should be refactored away.
-<sup>[[link](#hack)]</sup>
-
-* <a name="review"></a>
-  Use `REVIEW` to note anything that should be looked at to confirm it is
-  working as intended. For example: `REVIEW: Are we sure this is how the client
-  does X currently?`
-<sup>[[link](#review)]</sup>
-
-* <a name="document-annotations"></a>
-  Use other custom annotation keywords if it feels appropriate, but be sure to
-  document them in your project's `README` or similar.
-<sup>[[link](#document-annotations)]</sup>
-
 ## Classes & Modules
 
 * <a name="consistent-classes"></a>
@@ -2156,13 +2127,15 @@ no parameters.
 
   ```Ruby
   class Person
-    # extend and include go first
+    # extend, include and using, prepend go first
     extend SomeModule
     include AnotherModule
+    using SomeRefinement
 
     # inner classes
     CustomErrorKlass = Class.new(StandardError)
-
+    class CustomErrorKlass < StandardError; end
+    
     # constants are next
     SOME_CONSTANT = 20
 
@@ -2542,22 +2515,14 @@ no parameters.
     def self.some_other_method
       # body omitted
     end
-
-    # Also possible and convenient when you
-    # have to define many class methods.
-    class << self
-      def first_method
-        # body omitted
-      end
-
-      def second_method_etc
-        # body omitted
-      end
-    end
   end
   ```
 
 * <a name="alias-method-lexically"></a>
+
+  In general, prefer `alias_method` for the common case of giving methods
+  other names.
+
   Prefer `alias` when aliasing methods in lexical class scope as the
   resolution of `self` in this context is also lexical, and it communicates
   clearly to the user that the indirection of your alias will not be altered
@@ -2747,7 +2712,7 @@ no parameters.
     # the rescue clause does absolutely nothing
   end
 
-  # bad
+  # bad NEVER NEVER NEVER NEVER
   do_something rescue nil
   ```
 
@@ -2897,6 +2862,7 @@ resource cleanup when possible.
   arr = []
   hash = {}
   ```
+  
 
 * <a name="percent-w"></a>
   Prefer `%w` to the literal array syntax when you need an array of words
@@ -3108,9 +3074,8 @@ resource cleanup when possible.
   ```
 
 * <a name="provide-alternate-accessor-to-collections"></a>
-  When providing an accessor for a collection, provide an alternate form
-  to save users from checking for `nil` before accessing an element in
-  the collection.
+  When providing an accessor for a collection, provide an
+empty collection as the default value to avoid pervasive nil checking.
 <sup>[[link](#provide-alternate-accessor-to-collections)]</sup>
 
   ```Ruby
@@ -3120,12 +3085,8 @@ resource cleanup when possible.
   end
 
   # good
-  def awesome_things(index = nil)
-    if index && @awesome_things
-      @awesome_things[index]
-    else
-      @awesome_things
-    end
+  def awesome_things
+    @awesome_things ||= []
   end
   ```
 
@@ -3303,7 +3264,7 @@ resource cleanup when possible.
 ## Regular Expressions
 
 > Some people, when confronted with a problem, think
-> "I know, I'll use regular expressions." Now they have two problems.<br>
+> "I know, I'll use regular expressions." Now they have `/\d+/` problems.<br>
 > -- Jamie Zawinski
 
 * <a name="no-regexp-for-plaintext"></a>
@@ -3668,47 +3629,11 @@ and has good Emacs integration.
 [partially based](http://confluence.jetbrains.com/display/RUBYDEV/RubyMine+Inspections)
 on this guide.
 
-# Contributing
-
-The guide is still a work in progress - some rules are lacking examples, some
-rules don't have examples that illustrate them clearly enough. Improving such rules
-is a great (and simple way) to help the Ruby community!
-
-In due time these issues will (hopefully) be addressed - just keep them in mind
-for now.
-
-Nothing written in this guide is set in stone. It's my desire to work
-together with everyone interested in Ruby coding style, so that we could
-ultimately create a resource that will be beneficial to the entire Ruby
-community.
-
-Feel free to open tickets or send pull requests with improvements. Thanks in
-advance for your help!
-
-You can also support the project (and RuboCop) with financial
-contributions via [gittip](https://www.gittip.com/bbatsov).
-
-[![Support via Gittip](https://rawgithub.com/twolfson/gittip-badge/0.2.0/dist/gittip.png)](https://www.gittip.com/bbatsov)
-
-## How to Contribute?
-
-It's easy, just follow the [contribution guidelines](https://github.com/bbatsov/ruby-style-guide/blob/master/CONTRIBUTING.md).
-
 # License
 
 ![Creative Commons License](http://i.creativecommons.org/l/by/3.0/88x31.png)
 This work is licensed under a [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/deed.en_US)
 
-# Spread the Word
-
-A community-driven style guide is of little use to a community that
-doesn't know about its existence. Tweet about the guide, share it with
-your friends and colleagues. Every comment, suggestion or opinion we
-get makes the guide just a little bit better. And we want to have the
-best possible guide, don't we?
-
-Cheers,<br>
-[Bozhidar](https://twitter.com/bbatsov)
 
 [PEP-8]: http://www.python.org/dev/peps/pep-0008/
 [rails-style-guide]: https://github.com/bbatsov/rails-style-guide
