@@ -204,13 +204,14 @@ style guide.
 
   `{` and `}` deserve a bit of clarification, since they are used
   for block and hash literals, as well as string interpolation.
-  For hash literals two styles are considered acceptable.
+  For hash literals two styles are considered acceptable, however, 
+  the Goldstar style is to use spaces.
 
   ```Ruby
   # good - space after { and before }
   { one: 1, two: 2 }
 
-  # good - no space after { and before }
+  # bad - no space after { and before }
   {one: 1, two: 2}
   ```
 
