@@ -204,13 +204,14 @@ style guide.
 
   `{` and `}` deserve a bit of clarification, since they are used
   for block and hash literals, as well as string interpolation.
-  For hash literals two styles are considered acceptable.
+  For hash literals two styles are considered acceptable, however, 
+  the Goldstar style is to use spaces.
 
   ```Ruby
   # good - space after { and before }
   { one: 1, two: 2 }
 
-  # good - no space after { and before }
+  # bad - no space after { and before }
   {one: 1, two: 2}
   ```
 
@@ -364,10 +365,10 @@ style guide.
   some_method(size, count, color)
   ```
 
-* <a name="spaces-around-equals"></a>
-  Use spaces around the `=` operator when assigning default values to method
+* <a name="no-spaces-around-equals"></a>
+  Do not use spaces around the `=` operator when assigning default values to method
   parameters:
-<sup>[[link](#spaces-around-equals)]</sup>
+<sup>[[link](#no-spaces-around-equals)]</sup>
 
   ```Ruby
   # bad
