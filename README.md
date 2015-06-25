@@ -364,10 +364,10 @@ style guide.
   some_method(size, count, color)
   ```
 
-* <a name="spaces-around-equals"></a>
-  Use spaces around the `=` operator when assigning default values to method
+* <a name="no-spaces-around-equals"></a>
+  Do not use spaces around the `=` operator when assigning default values to method
   parameters:
-<sup>[[link](#spaces-around-equals)]</sup>
+<sup>[[link](#no-spaces-around-equals)]</sup>
 
   ```Ruby
   # bad
