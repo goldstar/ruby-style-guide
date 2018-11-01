@@ -1,0 +1,15 @@
+inherit_from: ~/.gem/ruby/2.4.3/gems/rubocop-0.59.2/config/default.yml
+# inherit_from: ../vendor/ruby/2.4.0/gems/rubocop-0.60.0/config/default.yml
+
+LineLength:
+  Max: 110
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+Layout/DotPosition:
+  Enabled: true
+  Description: 'Checks the position of the dot in multi-line method calls.'
+  EnforcedStyle: trailing
+
